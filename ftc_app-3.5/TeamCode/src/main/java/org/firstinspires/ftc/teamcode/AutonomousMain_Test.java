@@ -78,7 +78,7 @@ public class AutonomousMain_Test extends LinearOpMode {
    /* Declare OpMode members. */
 
 
-ColorSensor color_sensor;
+//ColorSensor color_sensor;
 
     private boolean hardCode = true;
 
@@ -113,7 +113,7 @@ ColorSensor color_sensor;
         rightMotor = hardwareMap.dcMotor.get("rightMotor");
         rightArmServo = hardwareMap.servo.get("rightArmServo");
         leftArmServo = hardwareMap.servo.get("leftArmServo");
-        color_sensor = hardwareMap.colorSensor.get("color");
+       // color_sensor = hardwareMap.colorSensor.get("color");
 
         // eg: Set the drive motor directions:
         // "Reverse" the motor that runs backwards when connected directly to the battery
@@ -153,19 +153,43 @@ ColorSensor color_sensor;
 
         // run until the end of the match (driver presses STOP)
         if (opModeIsActive()) {
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.update();
+            //telemetry.addData("Status", "Run Time: " + runtime.toString());
+           // telemetry.update();
            /*shooterLeft.setPower(0.37);
            shooterRight.setPower(0.37);*/
 
             //color_sensor.red();
             //color_sensor.blue();
-
-            leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             rightArmServo.setDirection(Direction.FORWARD);
             leftArmServo.setDirection(Direction.FORWARD);
 
+            int leftPosition = -leftMotor.getCurrentPosition();
+            telemetry.addData("Encoder Position", leftPosition);
+            int rightPosition = -rightMotor.getCurrentPosition();
+            telemetry.addData("Encoder Position", rightPosition);
+
+            telemetry.update();
+            leftMotor.setTargetPosition(7200);
+            rightMotor.setTargetPosition(7200);
+            leftMotor.setPower(.4);
+            rightMotor.setPower(.4);
+
+            while(leftMotor.isBusy() && rightMotor.isBusy() && opModeIsActive()) {
+                leftPosition = -leftMotor.getCurrentPosition();
+                telemetry.addData("Left Encoder Position", leftPosition);
+                rightPosition = -rightMotor.getCurrentPosition();
+                telemetry.addData("Right Encoder Position", rightPosition);
+                telemetry.update();
+            }
+            sleep(5000);
+            leftMotor.setPower(0);
+            rightMotor.setPower(0);
+
+            // sleep(5000);
          /*   rightArmServo.setPosition(.7);
             leftArmServo.setPosition(.7);
 
@@ -182,9 +206,9 @@ ColorSensor color_sensor;
             rightMotor.setPower(1);
             Thread.sleep(1800);
 */
-         leftMotor.getCurrentPosition();
-         leftMotor.setTargetPosition(100);
-         leftMotor.isBusy();
+        // leftMotor.getCurrentPosition();
+       //  leftMotor.setTargetPosition(100);
+        // leftMotor.isBusy();
    /*
     Thread.sleep(1000);
    } catch (InterruptedException e) {
