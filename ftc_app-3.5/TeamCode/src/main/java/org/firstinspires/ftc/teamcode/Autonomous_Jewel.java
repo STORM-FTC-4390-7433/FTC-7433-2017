@@ -48,14 +48,14 @@ E OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-        import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-        import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-        import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-        import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-        import com.qualcomm.robotcore.hardware.DcMotor;
-        import com.qualcomm.robotcore.hardware.Servo;
-        import com.qualcomm.robotcore.util.ElapsedTime;
-        import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -70,9 +70,9 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="AutonomousTest", group="Autonomous")  // @Autonomous(...) is the other common choice
+@Autonomous(name="AutonomousJewel", group="Autonomous")  // @Autonomous(...) is the other common choice
 
-public class AutonomousMain_Test extends LinearOpMode {
+public class Autonomous_Jewel extends LinearOpMode {
 
 
    /* Declare OpMode members. */
@@ -85,6 +85,7 @@ public class AutonomousMain_Test extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftMotor = null;
     private DcMotor rightMotor = null;
+    private DcMotor jewelMotor = null;
     private Servo rightArmServo = null;
     private Servo leftArmServo = null;
     //private ColorSensor color_sensor = null;
@@ -113,7 +114,12 @@ public class AutonomousMain_Test extends LinearOpMode {
         rightMotor = hardwareMap.dcMotor.get("rightMotor");
         rightArmServo = hardwareMap.servo.get("rightArmServo");
         leftArmServo = hardwareMap.servo.get("leftArmServo");
-       // color_sensor = hardwareMap.colorSensor.get("color");
+        jewelMotor = hardwareMap.dcMotor.get("jewelMotor");
+        // color_sensor = hardwareMap.colorSensor.get("color");
+        leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         // eg: Set the drive motor directions:
         // "Reverse" the motor that runs backwards when connected directly to the battery
@@ -122,8 +128,8 @@ public class AutonomousMain_Test extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-        leftMotor = hardwareMap.dcMotor.get("leftMotor");
-        rightMotor = hardwareMap.dcMotor.get("rightMotor");
+        //leftMotor = hardwareMap.dcMotor.get("leftMotor");
+        //rightMotor = hardwareMap.dcMotor.get("rightMotor");
         //jewelServo = hardwareMap.servo.get("jewelServo");
         //color_sensor = hardwareMap.colorSensor.get("color");
 
@@ -131,63 +137,51 @@ public class AutonomousMain_Test extends LinearOpMode {
         // Reverse the motor that runs backwards when connected directly to the battery
         leftMotor.setDirection(DcMotor.Direction.REVERSE);
         rightMotor.setDirection(DcMotor.Direction.FORWARD);
-        //runtime.reset();
-
-  /*if(hardCode == true) {
-   telemetry.addData("Status", "Resetting Encoders");    //
-   telemetry.update();
-   //leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-   //rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-   idle();
-   leftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-   rightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-   telemetry.addData("Path0", "Starting at %7d :%7d",
-           leftMotor.getCurrentPosition(),
-           rightMotor.getCurrentPosition());
-   telemetry.update();
-   encoderDrive(DRIVE_SPEED, 60.00, 60.00, 25);  // S1: Forward 47 Inches with 5 Sec timeout
-
-   hardCode = false;
-  }*/
+        jewelMotor.setDirection(DcMotor.Direction.REVERSE);
+        runtime.reset();
 
 
         // run until the end of the match (driver presses STOP)
         if (opModeIsActive()) {
-            //telemetry.addData("Status", "Run Time: " + runtime.toString());
-           // telemetry.update();
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            // telemetry.update();
            /*shooterLeft.setPower(0.37);
            shooterRight.setPower(0.37);*/
-
-            //color_sensor.red();
-            //color_sensor.blue();
             leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            rightArmServo.setDirection(Direction.FORWARD);
-            leftArmServo.setDirection(Direction.FORWARD);
+            //color_sensor.red();
+            //color_sensor.blue();
+           // leftArmServo.setPosition(.3);
+          //  rightArmServo.setPosition(.3);
+            //sleep(1000);
+            jewelMotor.setPower(.5);
+            Thread.sleep(1500);
 
-            int leftPosition = -leftMotor.getCurrentPosition();
+            leftMotor.setTargetPosition(-3000);
+            rightMotor.setTargetPosition(-3000);
+
+            int leftPosition = leftMotor.getCurrentPosition();
             telemetry.addData("Encoder Position", leftPosition);
-            int rightPosition = -rightMotor.getCurrentPosition();
+            int rightPosition = rightMotor.getCurrentPosition();
             telemetry.addData("Encoder Position", rightPosition);
 
             telemetry.update();
-            leftMotor.setTargetPosition(7200);
-            rightMotor.setTargetPosition(7200);
-            leftMotor.setPower(.4);
+            leftMotor.setPower(.9);
             rightMotor.setPower(.4);
 
             while(leftMotor.isBusy() && rightMotor.isBusy() && opModeIsActive()) {
-                leftPosition = -leftMotor.getCurrentPosition();
+                leftPosition = leftMotor.getCurrentPosition();
                 telemetry.addData("Left Encoder Position", leftPosition);
-                rightPosition = -rightMotor.getCurrentPosition();
+                rightPosition = rightMotor.getCurrentPosition();
                 telemetry.addData("Right Encoder Position", rightPosition);
                 telemetry.update();
             }
-            sleep(5000);
+
             leftMotor.setPower(0);
             rightMotor.setPower(0);
+            sleep(5000);
 
             // sleep(5000);
          /*   rightArmServo.setPosition(.7);
@@ -206,9 +200,9 @@ public class AutonomousMain_Test extends LinearOpMode {
             rightMotor.setPower(1);
             Thread.sleep(1800);
 */
-        // leftMotor.getCurrentPosition();
-       //  leftMotor.setTargetPosition(100);
-        // leftMotor.isBusy();
+            // leftMotor.getCurrentPosition();
+            //  leftMotor.setTargetPosition(100);
+            // leftMotor.isBusy();
    /*
     Thread.sleep(1000);
    } catch (InterruptedException e) {
