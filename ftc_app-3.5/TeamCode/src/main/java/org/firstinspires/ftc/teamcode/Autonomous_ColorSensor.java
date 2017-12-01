@@ -70,9 +70,9 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="AutonomousJewel", group="Autonomous")  // @Autonomous(...) is the other common choice
+@Autonomous(name="AutonomousColorSensor", group="Autonomous")  // @Autonomous(...) is the other common choice
 
-public class Autonomous_Jewel extends LinearOpMode {
+public class Autonomous_ColorSensor extends LinearOpMode {
 
 
    /* Declare OpMode members. */
@@ -88,6 +88,7 @@ public class Autonomous_Jewel extends LinearOpMode {
     private DcMotor jewelMotor = null;
     private Servo rightArmServo = null;
     private Servo leftArmServo = null;
+    private ColorSensor ColorSensor = null;
     //private ColorSensor color_sensor = null;
     //private Servo jewelServo = null;
     //private int programState = 1;
@@ -115,7 +116,7 @@ public class Autonomous_Jewel extends LinearOpMode {
         rightArmServo = hardwareMap.servo.get("rightArmServo");
         leftArmServo = hardwareMap.servo.get("leftArmServo");
         jewelMotor = hardwareMap.dcMotor.get("jewelMotor");
-        // color_sensor = hardwareMap.colorSensor.get("color");
+        ColorSensor = hardwareMap.colorSensor.get("ColorSensor");
         leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -153,11 +154,18 @@ public class Autonomous_Jewel extends LinearOpMode {
             rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             //color_sensor.red();
             //color_sensor.blue();
-           // leftArmServo.setPosition(.3);
-          //  rightArmServo.setPosition(.3);
+            // leftArmServo.setPosition(.3);
+            //  rightArmServo.setPosition(.3);
             //sleep(1000);
-            jewelMotor.setPower(-.5);
+            jewelMotor.setPower(.5);
             Thread.sleep(1500);
+            if (ColorSensor.red() < 5) {
+                leftMotor.setPower(.5);
+                sleep(100);
+            }
+            if (ColorSensor.blue() < 5) {
+                leftMotor.setPower(-.5);
+            }
 
             leftMotor.setTargetPosition(-3000);
             rightMotor.setTargetPosition(-3000);
