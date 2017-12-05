@@ -70,8 +70,8 @@ public class TeleOp extends OpMode {
         throttleRight = (float)scaleInput(throttleRight);
         throttleLeft =  (float)scaleInput(throttleLeft);
 
-        leftMotor.setPower(throttleLeft);
-        rightMotor.setPower(throttleRight);
+        leftMotor.setPower(-throttleLeft);
+        rightMotor.setPower(-throttleRight);
     }
     double scaleInput(double dVal)  {
         double[] scaleArray = { 0.0, 0.05, 0.09, 0.10, 0.12, 0.15, 0.18, 0.24,

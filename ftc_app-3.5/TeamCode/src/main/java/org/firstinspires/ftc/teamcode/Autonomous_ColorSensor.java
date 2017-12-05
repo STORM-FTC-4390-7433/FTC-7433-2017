@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Color;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -8,6 +10,12 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.Servo.Direction;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+
+
+import android.app.Activity;
+import android.graphics.Color;
+import android.support.annotation.Nullable;
+import android.view.View;
 
 /**
  * Created by 7433 on 11/18/2017.
@@ -70,12 +78,15 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
+
+
+
 @Autonomous(name="AutonomousColorSensor", group="Autonomous")  // @Autonomous(...) is the other common choice
 
 public class Autonomous_ColorSensor extends LinearOpMode {
+    private ColorSensor ColorSensor = null;
 
-
-   /* Declare OpMode members. */
+    /* Declare OpMode members. */
 
 
 //ColorSensor color_sensor;
@@ -88,7 +99,7 @@ public class Autonomous_ColorSensor extends LinearOpMode {
     private DcMotor jewelMotor = null;
     private Servo rightArmServo = null;
     private Servo leftArmServo = null;
-    private ColorSensor ColorSensor = null;
+   // private ColorSensor ColorSensor = null;
     //private ColorSensor color_sensor = null;
     //private Servo jewelServo = null;
     //private int programState = 1;
@@ -104,8 +115,19 @@ public class Autonomous_ColorSensor extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        telemetry.addData("Status", "Initialized");
+      /*  telemetry.addData("Status", "Initialized");
         telemetry.update();
+
+        float hsvValues[] = {0F,0F,0F};
+        final float values[] = hsvValues;
+
+        int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
+        final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
+
+        boolean bLedOn = true;
+        ColorSensor.enableLed(bLedOn);
+        */
+      //  float havValues[] = {OF, OF, OF};
 
        /* eg: Initialize the hardware variables. Note that the strings used here as parameters
         * to 'get' must correspond to the names assigned during the robot configuration
@@ -121,6 +143,15 @@ public class Autonomous_ColorSensor extends LinearOpMode {
         rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        float hsvValues[] = {0F,0F,0F};
+        final float values[] = hsvValues;
+
+        int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
+        final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
+
+        boolean bLedOn = true;
+        ColorSensor.enableLed(bLedOn);
 
         // eg: Set the drive motor directions:
         // "Reverse" the motor that runs backwards when connected directly to the battery
@@ -141,9 +172,16 @@ public class Autonomous_ColorSensor extends LinearOpMode {
         jewelMotor.setDirection(DcMotor.Direction.REVERSE);
         runtime.reset();
 
+        telemetry.addData("LED", bLedOn ? "On" : "Off");
+        telemetry.addData("Clear", ColorSensor.alpha());
+        telemetry.addData("Red  ", ColorSensor.red());
+        telemetry.addData("Green", ColorSensor.green());
+        telemetry.addData("Blue ", ColorSensor.blue());
+        telemetry.addData("Hue", hsvValues[0]);
+        telemetry.update();
 
         // run until the end of the match (driver presses STOP)
-        if (opModeIsActive()) {
+        while (opModeIsActive()) {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             // telemetry.update();
            /*shooterLeft.setPower(0.37);
@@ -159,6 +197,19 @@ public class Autonomous_ColorSensor extends LinearOpMode {
             //sleep(1000);
             jewelMotor.setPower(.5);
             Thread.sleep(1500);
+
+
+            Color.RGBToHSV(ColorSensor.red(), ColorSensor.green(), ColorSensor.blue(), hsvValues);
+
+            telemetry.addData("LED", bLedOn ? "On" : "Off");
+            telemetry.addData("Clear", ColorSensor.alpha());
+            telemetry.addData("Red  ", ColorSensor.red());
+            telemetry.addData("Green", ColorSensor.green());
+            telemetry.addData("Blue ", ColorSensor.blue());
+            telemetry.addData("Hue", hsvValues[0]);
+            telemetry.update();
+//sleep(10000);
+
             if (ColorSensor.red() < 5) {
                 leftMotor.setPower(.5);
                 sleep(100);
@@ -167,7 +218,7 @@ public class Autonomous_ColorSensor extends LinearOpMode {
                 leftMotor.setPower(-.5);
             }
 
-            leftMotor.setTargetPosition(-3000);
+          /*  leftMotor.setTargetPosition(-3000);
             rightMotor.setTargetPosition(-3000);
 
             int leftPosition = leftMotor.getCurrentPosition();
@@ -190,7 +241,7 @@ public class Autonomous_ColorSensor extends LinearOpMode {
             leftMotor.setPower(0);
             rightMotor.setPower(0);
             sleep(5000);
-
+*/
             // sleep(5000);
          /*   rightArmServo.setPosition(.7);
             leftArmServo.setPosition(.7);
