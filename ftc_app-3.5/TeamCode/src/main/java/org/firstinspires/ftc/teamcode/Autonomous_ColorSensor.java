@@ -138,7 +138,7 @@ public class Autonomous_ColorSensor extends LinearOpMode {
         rightArmServo = hardwareMap.servo.get("rightArmServo");
         leftArmServo = hardwareMap.servo.get("leftArmServo");
         jewelMotor = hardwareMap.dcMotor.get("jewelMotor");
-        ColorSensor = hardwareMap.colorSensor.get("ColorSensor");
+         ColorSensor = hardwareMap.colorSensor.get("ColorSensor");
         leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -190,13 +190,17 @@ public class Autonomous_ColorSensor extends LinearOpMode {
             rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            jewelMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             //color_sensor.red();
             //color_sensor.blue();
             // leftArmServo.setPosition(.3);
             //  rightArmServo.setPosition(.3);
             //sleep(1000);
-            jewelMotor.setPower(.5);
-            Thread.sleep(1500);
+
+
+           // jewelMotor.setPower(.3);
+          //  Thread.sleep(1000);
+
 
 
             Color.RGBToHSV(ColorSensor.red(), ColorSensor.green(), ColorSensor.blue(), hsvValues);
@@ -208,15 +212,19 @@ public class Autonomous_ColorSensor extends LinearOpMode {
             telemetry.addData("Blue ", ColorSensor.blue());
             telemetry.addData("Hue", hsvValues[0]);
             telemetry.update();
+
+            if (ColorSensor.blue() > 25) {
+                leftMotor.setPower(1);
+                rightMotor.setPower(-1);
+                Thread.sleep(200);
+            }
+
+
+
 //sleep(10000);
 
-            if (ColorSensor.red() < 5) {
-                leftMotor.setPower(.5);
-                sleep(100);
-            }
-            if (ColorSensor.blue() < 5) {
-                leftMotor.setPower(-.5);
-            }
+
+
 
           /*  leftMotor.setTargetPosition(-3000);
             rightMotor.setTargetPosition(-3000);
