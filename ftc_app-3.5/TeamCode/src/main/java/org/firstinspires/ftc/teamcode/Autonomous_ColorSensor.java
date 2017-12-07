@@ -99,6 +99,7 @@ public class Autonomous_ColorSensor extends LinearOpMode {
     private DcMotor jewelMotor = null;
     private Servo rightArmServo = null;
     private Servo leftArmServo = null;
+    int nLoopCount = 0;
    // private ColorSensor ColorSensor = null;
     //private ColorSensor color_sensor = null;
     //private Servo jewelServo = null;
@@ -178,18 +179,26 @@ public class Autonomous_ColorSensor extends LinearOpMode {
         telemetry.addData("Green", ColorSensor.green());
         telemetry.addData("Blue ", ColorSensor.blue());
         telemetry.addData("Hue", hsvValues[0]);
+        telemetry.addData("nLoopCount", nLoopCount);
+        nLoopCount ++;
+
         telemetry.update();
 
         // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
+        while (opModeIsActive() && (nLoopCount < 10)) {
+            nLoopCount += 10;
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             // telemetry.update();
            /*shooterLeft.setPower(0.37);
            shooterRight.setPower(0.37);*/
-            leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+           /* leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            */
+            leftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            rightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
             jewelMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             //color_sensor.red();
             //color_sensor.blue();
@@ -198,29 +207,78 @@ public class Autonomous_ColorSensor extends LinearOpMode {
             //sleep(1000);
 
 
-           // jewelMotor.setPower(.3);
-          //  Thread.sleep(1000);
+            jewelMotor.setPower(.3);
+            sleep(400);
 
 
 
             Color.RGBToHSV(ColorSensor.red(), ColorSensor.green(), ColorSensor.blue(), hsvValues);
 
+            int leftPosition = leftMotor.getCurrentPosition();
+            telemetry.addData("Encoder Position", leftPosition);
+            int rightPosition = rightMotor.getCurrentPosition();
+            telemetry.addData("Encoder Position", rightPosition);
+            telemetry.update();
+
             telemetry.addData("LED", bLedOn ? "On" : "Off");
             telemetry.addData("Clear", ColorSensor.alpha());
             telemetry.addData("Red  ", ColorSensor.red());
-            telemetry.addData("Green", ColorSensor.green());
             telemetry.addData("Blue ", ColorSensor.blue());
             telemetry.addData("Hue", hsvValues[0]);
             telemetry.update();
 
-            if (ColorSensor.blue() > 25) {
+            sleep(5000);
+
+            if (ColorSensor.red() > 25) {
+                telemetry.addData("> 25", ColorSensor.blue());
+                telemetry.addData("Encoder Position", rightPosition);
+                telemetry.addData("LED", bLedOn ? "On" : "Off");
+                telemetry.addData("Red  ", ColorSensor.red());
+                telemetry.addData("Blue ", ColorSensor.blue());
+
+                telemetry.update();
                 leftMotor.setPower(1);
                 rightMotor.setPower(-1);
-                Thread.sleep(200);
+                sleep(1000);
+            } else if (ColorSensor.red() < 25){
+                /*telemetry.addData("< 35", ColorSensor.blue());
+                telemetry.addData("Encoder Position", rightPosition);
+                telemetry.addData("LED", bLedOn ? "On" : "Off");
+                telemetry.addData("Red  ", ColorSensor.red());
+                telemetry.addData("Blue ", ColorSensor.blue());
+                */
+               telemetry.update();
+               leftMotor.setPower(1);
+               rightMotor.setPower(-1);
+               sleep(1000);
             }
+           /* while(leftMotor.isBusy() && rightMotor.isBusy() && opModeIsActive()) {
+                leftPosition = leftMotor.getCurrentPosition();
+                telemetry.addData("Left Encoder Position", leftPosition);
+                rightPosition = rightMotor.getCurrentPosition();
+                telemetry.addData("Right Encoder Position", rightPosition);
+                telemetry.update();
+                */
 
 
-
+            leftMotor.setPower(0);
+            rightMotor.setPower(0);
+            sleep(5000);
+            /*leftPosition = leftMotor.getCurrentPosition();
+            rightPosition = rightMotor.getCurrentPosition();
+            telemetry.addData("end of loop", 0);
+            telemetry.addData("L Encoder Position", leftPosition);
+            telemetry.addData("R Encoder Position", rightPosition);
+            telemetry.update();
+            sleep(5000);
+            */
+                /*jewelMotor.setPower(-.3);
+                sleep(100);
+                leftMotor.setTargetPosition(-500);
+                rightMotor.setTargetPosition(500);
+                leftMotor.setPower(-.5);
+                rightMotor.setPower(.5);
+                Thread.sleep(200);*/
 //sleep(10000);
 
 

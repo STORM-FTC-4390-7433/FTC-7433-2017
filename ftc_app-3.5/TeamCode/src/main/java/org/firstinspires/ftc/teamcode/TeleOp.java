@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.util.Range;
 /**
  * Created by Ajit Singh on 10/6/2017.
  */
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="TestBotTeleop", group="TeleOp")
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="SuperNova", group="TeleOp")
 public class TeleOp extends OpMode {
     private DcMotor leftMotor = null;
     private DcMotor jewelMotor = null;
