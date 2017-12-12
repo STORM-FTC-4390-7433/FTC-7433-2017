@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.Servo.Direction;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -168,8 +169,8 @@ public class Autonomous_ColorSensor extends LinearOpMode {
 
         // eg: Set the drive motor directions:
         // Reverse the motor that runs backwards when connected directly to the battery
-        leftMotor.setDirection(DcMotor.Direction.REVERSE);
-        rightMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftMotor.setDirection(DcMotor.Direction.FORWARD);
+        rightMotor.setDirection(DcMotor.Direction.REVERSE);
         jewelMotor.setDirection(DcMotor.Direction.REVERSE);
         runtime.reset();
 
@@ -207,10 +208,15 @@ public class Autonomous_ColorSensor extends LinearOpMode {
             //sleep(1000);
 
 
-            jewelMotor.setPower(.3);
-            sleep(400);
+                jewelMotor.setPower(.1);
+                Thread.sleep(600);
 
-
+            telemetry.addData("LED", bLedOn ? "On" : "Off");
+            telemetry.addData("Clear", ColorSensor.alpha());
+            telemetry.addData("Red  ", ColorSensor.red());
+            telemetry.addData("Blue ", ColorSensor.blue());
+            telemetry.addData("Hue", hsvValues[0]);
+            telemetry.update();
 
             Color.RGBToHSV(ColorSensor.red(), ColorSensor.green(), ColorSensor.blue(), hsvValues);
 
@@ -226,31 +232,44 @@ public class Autonomous_ColorSensor extends LinearOpMode {
             telemetry.addData("Blue ", ColorSensor.blue());
             telemetry.addData("Hue", hsvValues[0]);
             telemetry.update();
+            sleep(2000);
 
-            sleep(5000);
+            telemetry.addData("LED", bLedOn ? "On" : "Off");
+            telemetry.addData("Clear", ColorSensor.alpha());
+            telemetry.addData("Red  ", ColorSensor.red());
+            telemetry.addData("Blue ", ColorSensor.blue());
+            telemetry.addData("Hue", hsvValues[0]);
+            telemetry.update();
+
+            sleep(1000);
 
             if (ColorSensor.red() > 25) {
-                telemetry.addData("> 25", ColorSensor.blue());
-                telemetry.addData("Encoder Position", rightPosition);
-                telemetry.addData("LED", bLedOn ? "On" : "Off");
-                telemetry.addData("Red  ", ColorSensor.red());
-                telemetry.addData("Blue ", ColorSensor.blue());
 
-                telemetry.update();
-                leftMotor.setPower(1);
-                rightMotor.setPower(-1);
-                sleep(1000);
+                leftMotor.setDirection(DcMotor.Direction.REVERSE);
+                rightMotor.setDirection(DcMotor.Direction.REVERSE);
+
+
+                leftMotor.setPower(.3);
+                rightMotor.setPower(.3);
+                Thread.sleep(800);
+
+
+
             } else if (ColorSensor.red() < 25){
-                /*telemetry.addData("< 35", ColorSensor.blue());
-                telemetry.addData("Encoder Position", rightPosition);
                 telemetry.addData("LED", bLedOn ? "On" : "Off");
+                telemetry.addData("Clear", ColorSensor.alpha());
                 telemetry.addData("Red  ", ColorSensor.red());
                 telemetry.addData("Blue ", ColorSensor.blue());
-                */
-               telemetry.update();
-               leftMotor.setPower(1);
-               rightMotor.setPower(-1);
-               sleep(1000);
+                telemetry.addData("Hue", hsvValues[0]);
+                telemetry.update();
+
+                rightMotor.setDirection(DcMotor.Direction.FORWARD);
+                leftMotor.setDirection(DcMotor.Direction.FORWARD);
+
+               rightMotor.setPower(.3);
+               leftMotor.setPower(.3);
+               Thread.sleep(800);
+
             }
            /* while(leftMotor.isBusy() && rightMotor.isBusy() && opModeIsActive()) {
                 leftPosition = leftMotor.getCurrentPosition();
@@ -259,11 +278,14 @@ public class Autonomous_ColorSensor extends LinearOpMode {
                 telemetry.addData("Right Encoder Position", rightPosition);
                 telemetry.update();
                 */
+            leftMotor.setDirection(DcMotor.Direction.REVERSE);
+            rightMotor.setDirection(DcMotor.Direction.FORWARD);
+            jewelMotor.setDirection(DcMotor.Direction.REVERSE);
 
 
-            leftMotor.setPower(0);
-            rightMotor.setPower(0);
-            sleep(5000);
+           // leftMotor.setPower(1);
+           // rightMotor.setPower(1);
+           // sleep(2000);
             /*leftPosition = leftMotor.getCurrentPosition();
             rightPosition = rightMotor.getCurrentPosition();
             telemetry.addData("end of loop", 0);
