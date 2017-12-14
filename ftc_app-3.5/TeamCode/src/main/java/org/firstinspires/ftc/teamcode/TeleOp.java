@@ -43,9 +43,9 @@ public class TeleOp extends OpMode {
             jewelMotor.setPower(0);
 
         if (gamepad2.y)
-            pulleyMotor.setPower(.5);
+            pulleyMotor.setPower(.7);
         else if (gamepad2.a)
-            pulleyMotor.setPower(-.5);
+            pulleyMotor.setPower(-.7);
         else
             pulleyMotor.setPower(0);
 
