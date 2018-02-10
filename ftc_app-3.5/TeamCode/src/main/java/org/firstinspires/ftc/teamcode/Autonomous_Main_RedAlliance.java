@@ -193,8 +193,8 @@ public class Autonomous_Main_RedAlliance extends LinearOpMode {
             //  rightArmServo.setPosition(.3);
             //sleep(1000);
 
-            jewelMotor.setPower(.2);
-            Thread.sleep(600);
+            jewelMotor.setPower(.15);
+            Thread.sleep(650);
 
             telemetry.addData("LED", bLedOn ? "On" : "Off");
             telemetry.addData("Clear", ColorSensor.alpha());
@@ -237,8 +237,8 @@ public class Autonomous_Main_RedAlliance extends LinearOpMode {
                 telemetry.addData("Hue", hsvValues[0]);
                 telemetry.update();
 
-                leftMotor.setTargetPosition(-300);
-                rightMotor.setTargetPosition(300);
+                leftMotor.setTargetPosition(-400);
+                rightMotor.setTargetPosition(400);
                 leftMotor.setPower(.1);
                 rightMotor.setPower(.1);
                 while (leftMotor.isBusy() && rightMotor.isBusy() && opModeIsActive()) {
@@ -284,8 +284,8 @@ public class Autonomous_Main_RedAlliance extends LinearOpMode {
                 telemetry.addData("Hue", hsvValues[0]);
                 telemetry.update();
 
-                leftMotor.setTargetPosition(250);
-                rightMotor.setTargetPosition(-250);
+                leftMotor.setTargetPosition(350);
+                rightMotor.setTargetPosition(-350);
                 leftMotor.setPower(.1);
                 rightMotor.setPower(.1);
                 while (leftMotor.isBusy() && rightMotor.isBusy() && opModeIsActive()) {

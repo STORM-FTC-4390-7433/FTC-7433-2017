@@ -43,9 +43,9 @@ public class TeleOp extends OpMode {
             jewelMotor.setPower(0);
 
         if (gamepad2.y)
-            pulleyMotor.setPower(.7);
+            pulleyMotor.setPower(1);
         else if (gamepad2.a)
-            pulleyMotor.setPower(-.7);
+            pulleyMotor.setPower(-1);
         else
             pulleyMotor.setPower(0);
 
@@ -54,7 +54,7 @@ public class TeleOp extends OpMode {
         //else if (gamepad2.left_trigger < 0)
             //leftArmServo.setPosition(60);
         else
-            leftArmServo.setPosition(.3);
+            leftArmServo.setPosition(.15);
 
         if (gamepad2.right_bumper)
             rightArmServo.setPosition(1);
